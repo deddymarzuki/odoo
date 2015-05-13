@@ -1,0 +1,1 @@
+python odoo.py -w odoo -r odoo --addons-path=addons

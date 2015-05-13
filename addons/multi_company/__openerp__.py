@@ -35,7 +35,7 @@ This module is the base module for other multi-company modules.
     'depends': [
         'base',
         'sale_stock',
-        'project',
+        #'project',
     ],
     'data': ['res_company_view.xml'],
     'demo': ['multi_company_demo.xml'],
