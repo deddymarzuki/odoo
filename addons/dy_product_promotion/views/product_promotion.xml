@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <record model="ir.ui.view" id="product_promotion_form_view">
+            <field name="name">product_promotion.form</field>
+            <field name="model">dy_product_promotion.product_promotion</field>
+            <field name="arch" type="xml">
+                <form string="Product Promotion Form">
+                    <sheet>
+                        <group>
+                            <field name="name" />
+                            <field name="description"/>
+                            <field name="start_date"/>
+                            <field name="end_date" />
+                            <field name="line_items">
+                                    <tree string="Items">
+                                        <field name="product"/>
+                                        <field name="quantity"/>
+                                        <field name="price"/>
+                                    </tree>
+                            </field>
+                            <field name="total_price" />
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="product_promotion_search_view">
+            <field name="name">product_promotion.search</field>
+            <field name="model">dy_product_promotion.product_promotion</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="description"/>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="product_promotion_tree_view">
+            <field name="name">product_promotion.tree</field>
+            <field name="model">dy_product_promotion.product_promotion</field>
+            <field name="arch" type="xml">
+                <tree string="Product Promotion">
+                    <field name="name"/>
+                    <field name="start_date"/>
+                    <field name="end_date" />
+                </tree>
+            </field>
+        </record>
+
+        <!-- window action -->
+        <!--
+            The following tag is an action definition for a "window action",
+            that is an action opening a view or a set of views
+        -->
+        <record model="ir.actions.act_window" id="product_promotion_list_action">
+            <field name="name">Product Promotion</field>
+            <field name="res_model">dy_product_promotion.product_promotion</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Create the first product promotion
+                </p>
+            </field>
+        </record>
+
+        <!-- top level menu: should be placed below product variants -->
+        <menuitem id="product_promotion_menu" parent="base.menu_product"
+                  name="Product Promotion" action="product_promotion_list_action" />
+
+
+
+    </data>
+</openerp>
+
