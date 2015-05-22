@@ -1057,6 +1057,7 @@ function openerp_pos_models(instance, module){ //module is instance.point_of_sal
             this.get('orderLines').add(line);
             this.selectLine(this.getLastOrderline());
         },
+        // TODO: Check for promotion
         addProduct: function(product, options){
             options = options || {};
             var attr = JSON.parse(JSON.stringify(product));
@@ -1073,6 +1074,8 @@ function openerp_pos_models(instance, module){ //module is instance.point_of_sal
             if(options.discount !== undefined){
                 line.set_discount(options.discount);
             }
+
+            //line.set_unit_price(0);
 
             var last_orderline = this.getLastOrderline();
             if( last_orderline && last_orderline.can_be_merged_with(line) && options.merge !== false){
