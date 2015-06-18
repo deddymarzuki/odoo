@@ -147,6 +147,7 @@ class EscposDriver(Thread):
 
     def run(self):
 
+        printer = None
         if not escpos:
             _logger.error('ESC/POS cannot initialize, please verify system dependencies.')
             return
