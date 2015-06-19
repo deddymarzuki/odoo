@@ -43,9 +43,9 @@ class CustomerDisplayDriver(Thread):
         self.lock = Lock()
         self.status = {'status': 'connecting', 'messages': []}
         self.device_name = config.get(
-            'customer_display_device_name', '/dev/ttyUSB0')
+            'customer_display_device_name', '/dev/ttyS0')
         self.device_rate = int(config.get(
-            'customer_display_device_rate', 9600))
+            'customer_display_device_rate', 2400))
         self.device_timeout = int(config.get(
             'customer_display_device_timeout', 2))
         self.serial = False
