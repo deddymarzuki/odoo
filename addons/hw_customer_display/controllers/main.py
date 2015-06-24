@@ -115,7 +115,7 @@ class CustomerDisplayDriver(Thread):
         text = texts['text'];
 
         #self.serial_write(lightCode)
-        self.serial_write('\x1b\x51\x41' + text + '\x0d')
+        self.serial_write("\x1b\x51\x41" + text + "\x0d")
 
 
     def setup_customer_display(self):
@@ -140,8 +140,9 @@ class CustomerDisplayDriver(Thread):
         self.serial_write(command)
 
     def serial_write(self, text):
+        logger.info('serial_write: ' + text + " instance of str: " + isinstance(text, str))
         assert isinstance(text, str), 'text must be a string'
-        logger.info('serial_write: ' + text)
+
         self.serial.write(text)
 
     def send_text_customer_display(self, texts):
