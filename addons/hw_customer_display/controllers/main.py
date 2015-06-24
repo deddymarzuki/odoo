@@ -105,16 +105,17 @@ class CustomerDisplayDriver(Thread):
         if textMode == 'addProduct':
             lightCode = '\x30'
         elif textMode == 'total':
-            lightCode = '\x31'
-        elif textMode == 'change':
             lightCode = '\x32'
+        elif textMode == 'change':
+            lightCode = '\x34'
 
         lightCode = '\x1b\x73' + lightCode
 
         text = texts['text'];
 
-        self.serial_write(lightCode)
+
         self.serial_write("\x1b\x51\x41" + text + "\x0d")
+        self.serial_write(lightCode)
 
 
     def setup_customer_display(self):
