@@ -1,4 +1,3 @@
-# -*- encoding: utf-8 -*-
 ##############################################################################
 #
 #    Hardware Customer Display module for Odoo
@@ -140,7 +139,7 @@ class CustomerDisplayDriver(Thread):
         self.serial_write(command)
 
     def serial_write(self, text):
-        logger.info('serial_write: ' + text + " instance of str: " + isinstance(text, str))
+        logger.info("serial_write: " + text + " instance of str: " + isinstance(text, str))
         assert isinstance(text, str), 'text must be a string'
 
         self.serial.write(text)
