@@ -100,21 +100,20 @@ class CustomerDisplayDriver(Thread):
         #self.serial_write(dline)
         # convert
         textMode = texts['mode']
-        lightCode = '\x30'
+        lightCode = "\x30"
 
         if textMode == 'addProduct':
-            lightCode = '\x30'
+            lightCode = "\x30"
         elif textMode == 'total':
-            lightCode = '\x32'
+            lightCode = "\x32"
         elif textMode == 'change':
-            lightCode = '\x34'
+            lightCode = "\x34"
 
-        lightCode = '\x1b\x73' + lightCode
+        lightCode = "\x1b\x73" + lightCode
 
-        text = texts['text'];
-
-
+        text = texts['text']
         self.serial_write("\x1b\x51\x41" + text + "\x0d")
+        time.sleep(0.1)
         self.serial_write(lightCode)
 
 
