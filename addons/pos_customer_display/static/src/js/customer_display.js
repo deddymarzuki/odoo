@@ -39,7 +39,7 @@ openerp.pos_customer_display = function(instance){
                 //    this.proxy.align_left(line.get_product().display_name, line_length),
                 //    this.proxy.align_left(l21, line_length - l22.length) + l22
                 //   );
-                lines_to_send = line.get_display_price();
+                lines_to_send = line.get_display_price().toFixed(currency_rounding);
                 text_mode = 'addProduct'
 
                 //alert('line: ' + line);
