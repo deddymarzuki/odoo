@@ -23,7 +23,7 @@
 
 {
     'name': 'Hardware Customer Display',
-    'version': '0.1',
+    'version': '0.3',
     'category': 'Hardware Drivers',
     'license': 'AGPL-3',
     'summary': 'Adds support for Customer Display in the Point of Sale',
@@ -41,8 +41,8 @@ The configuration of the hardware is done in the configuration file of
 the Odoo server of the POSbox. You should add the following entries in
 the configuration file:
 
-* customer_display_device_name (default = /dev/ttyUSB0)
-* customer_display_device_rate (default = 9600)
+* customer_display_device_name (default = /dev/ttyS0)
+* customer_display_device_rate (default = 2400)
 * customer_display_device_timeout (default = 2 seconds)
 
 The number of cols of the Customer Display (usually 20) should be

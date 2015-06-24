@@ -38,10 +38,12 @@ logger = logging.getLogger(__name__)
 
 class CustomerDisplayDriver(Thread):
     def __init__(self):
+        logger.debug('Testing Customer Display')
         Thread.__init__(self)
         self.queue = Queue()
         self.lock = Lock()
-        self.status = {'status': 'connecting', 'messages': []}
+        #self.status = {'status': 'connecting', 'messages': []}
+        self.status = {'status': 'connected', 'messages': []}
         self.device_name = config.get(
             'customer_display_device_name', '/dev/ttyS0')
         self.device_rate = int(config.get(
@@ -84,19 +86,37 @@ class CustomerDisplayDriver(Thread):
         # Bixolon spec : 11. "Move Cursor to Specified Position"
         self.cmd_serial_write('\x1B\x6C' + chr(col) + chr(row))
 
-    def display_text(self, lines):
+    def display_text(self, texts):
         logger.debug(
-            "Preparing to send the following lines to LCD: %s" % lines)
+            "Preparing to send the following lines to LCD: %s" % texts)
         # We don't check the number of rows/cols here, because it has already
         # been checked in the POS client in the JS code
-        lines_ascii = []
-        for line in lines:
-            lines_ascii.append(unidecode(line))
-        row = 0
-        for dline in lines_ascii:
-            row += 1
-            self.move_cursor(1, row)
-            self.serial_write(dline)
+        #lines_ascii = []
+        #for line in lines:
+        #    lines_ascii.append(unidecode(line))
+        #row = 0
+        #for dline in lines_ascii:
+        #    row += 1
+        #   self.move_cursor(1, row)
+        #self.serial_write(dline)
+        # convert
+        textMode = texts['mode']
+        lightCode = '\x30'
+
+        if textMode == 'addProduct':
+            lightCode = '\x30'
+        elif textMode == 'total':
+            lightCode = '\x31'
+        elif textMode == 'change':
+            lightCode = '\x32'
+
+        lightCode = '\x1b\x73' + lightCode
+
+        text = texts['text'];
+
+        self.serial_write(lightCode)
+        self.serial_write(text)
+
 
     def setup_customer_display(self):
         '''Set LCD cursor to off
@@ -123,7 +143,7 @@ class CustomerDisplayDriver(Thread):
         assert isinstance(text, str), 'text must be a string'
         self.serial.write(text)
 
-    def send_text_customer_display(self, text_to_display):
+    def send_text_customer_display(self, texts):
         '''This function sends the data to the serial/usb port.
         We open and close the serial connection on every message display.
         Why ?
@@ -133,8 +153,8 @@ class CustomerDisplayDriver(Thread):
         customer display and it will work again on the next message without
         problem
         '''
-        lines = simplejson.loads(text_to_display)
-        assert isinstance(lines, list), 'lines_list should be a list'
+        #lines = simplejson.loads(text_to_display)
+        #assert isinstance(lines, list), 'lines_list should be a list'
         try:
             logger.debug(
                 'Opening serial port %s for customer display with baudrate %d'
@@ -143,9 +163,9 @@ class CustomerDisplayDriver(Thread):
                 self.device_name, self.device_rate,
                 timeout=self.device_timeout)
             logger.debug('serial.is_open = %s' % self.serial.isOpen())
-            self.setup_customer_display()
-            self.clear_customer_display()
-            self.display_text(lines)
+            #self.setup_customer_display()
+            #self.clear_customer_display()
+            self.display_text(texts)
         except Exception, e:
             logger.error('Exception in serial connection: %s' % str(e))
         finally:
@@ -173,6 +193,12 @@ class CustomerDisplayProxy(hw_proxy.Proxy):
     @http.route(
         '/hw_proxy/send_text_customer_display', type='json', auth='none',
         cors='*')
-    def send_text_customer_display(self, text_to_display):
-        logger.debug('LCD: Call send_text_customer_display')
-        driver.push_task('display', text_to_display)
+    def send_text_customer_display(self, text_to_display, text_mode):
+        logger.debug('LCD: Call send_text_customer_display: ')
+        logger.debug('text: ' + text_to_display)
+        logger.debug('text_mode: ' + text_mode)
+
+        data = { 'text' : text_to_display, 'mode' : text_mode}
+        #driver.push_task('display', text_to_display)
+        driver.push_task('display', data)
+        #need one more display, in order to add more data
