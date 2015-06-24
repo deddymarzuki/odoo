@@ -38,7 +38,7 @@ logger = logging.getLogger(__name__)
 
 class CustomerDisplayDriver(Thread):
     def __init__(self):
-        logger.debug('Testing Customer Display')
+        logger.info('Testing Customer Display')
         Thread.__init__(self)
         self.queue = Queue()
         self.lock = Lock()
@@ -87,7 +87,7 @@ class CustomerDisplayDriver(Thread):
         self.cmd_serial_write('\x1B\x6C' + chr(col) + chr(row))
 
     def display_text(self, texts):
-        logger.debug(
+        logger.info(
             "Preparing to send the following lines to LCD: %s" % texts)
         # We don't check the number of rows/cols here, because it has already
         # been checked in the POS client in the JS code
@@ -124,14 +124,14 @@ class CustomerDisplayDriver(Thread):
         inherit this function'''
         # Bixolon spec : 35. "Set Cursor On/Off"
         self.cmd_serial_write('\x1F\x43\x00')
-        logger.debug('LCD cursor set to off')
+        logger.info('LCD cursor set to off')
 
     def clear_customer_display(self):
         '''If your LCD has different clearing instruction, you should inherit
         this function'''
         # Bixolon spec : 12. "Clear Display Screen and Clear String Mode"
         self.cmd_serial_write('\x0C')
-        logger.debug('Customer display cleared')
+        logger.info('Customer display cleared')
 
     def cmd_serial_write(self, command):
         '''If your LCD requires a prefix and/or suffix on all commands,
@@ -156,13 +156,13 @@ class CustomerDisplayDriver(Thread):
         #lines = simplejson.loads(text_to_display)
         #assert isinstance(lines, list), 'lines_list should be a list'
         try:
-            logger.debug(
+            logger.info(
                 'Opening serial port %s for customer display with baudrate %d'
                 % (self.device_name, self.device_rate))
             self.serial = Serial(
                 self.device_name, self.device_rate,
                 timeout=self.device_timeout)
-            logger.debug('serial.is_open = %s' % self.serial.isOpen())
+            logger.info('serial.is_open = %s' % self.serial.isOpen())
             #self.setup_customer_display()
             #self.clear_customer_display()
             self.display_text(texts)
@@ -170,7 +170,7 @@ class CustomerDisplayDriver(Thread):
             logger.error('Exception in serial connection: %s' % str(e))
         finally:
             if self.serial:
-                logger.debug('Closing serial port for customer display')
+                logger.info('Closing serial port for customer display')
                 self.serial.close()
 
     def run(self):
@@ -194,9 +194,9 @@ class CustomerDisplayProxy(hw_proxy.Proxy):
         '/hw_proxy/send_text_customer_display', type='json', auth='none',
         cors='*')
     def send_text_customer_display(self, text_to_display, text_mode):
-        logger.debug('LCD: Call send_text_customer_display: ')
-        logger.debug('text: ' + text_to_display)
-        logger.debug('text_mode: ' + text_mode)
+        logger.info('LCD: Call send_text_customer_display: ')
+        logger.info('text: ' + text_to_display)
+        logger.info('text_mode: ' + text_mode)
 
         data = { 'text' : text_to_display, 'mode' : text_mode}
         #driver.push_task('display', text_to_display)
