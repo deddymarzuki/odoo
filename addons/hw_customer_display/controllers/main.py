@@ -139,7 +139,7 @@ class CustomerDisplayDriver(Thread):
         self.serial_write(command)
 
     def serial_write(self, text):
-        logger.info("serial_write: " + text + " instance of str: " + isinstance(text, str))
+        logger.info("serial_write: " + text)
         assert isinstance(text, str), 'text must be a string'
 
         self.serial.write(text)
