@@ -114,7 +114,7 @@ class CustomerDisplayDriver(Thread):
 
         text = texts['text'];
 
-        self.serial_write(lightCode)
+        #self.serial_write(lightCode)
         self.serial_write("\x1b\x51\x41" + text + "\x0d")
 
 
