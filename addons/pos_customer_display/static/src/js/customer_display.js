@@ -88,12 +88,14 @@ openerp.pos_customer_display = function(instance){
                 //    this.proxy.align_center(_t("Next Customer"), line_length),
                 //    this.proxy.align_left(' ', line_length)
                 //    );
+                line = "0.00";
 
             } else if (type == 'openPOS') {
                 //var lines_to_send = new Array(
                 //    this.proxy.align_center(_t("Point of Sale Open"), line_length),
                 //    this.proxy.align_left(' ', line_length)
                 //    );
+                line = "0.00";
 
             } else if (type = 'closePOS') {
                 //var lines_to_send = new Array(
@@ -105,7 +107,7 @@ openerp.pos_customer_display = function(instance){
                 return;
             }
 
-            this.proxy.connect('http://192.168.0.10:8069');
+            this.proxy.connect('http://localhost:8069');
             this.proxy.send_text_customer_display(lines_to_send, line_length, text_mode);
             //console.log('prepare_text_customer_display type=' + type + ' | l1=' + lines_to_send[0] + ' | l2=' + lines_to_send[1]);
         },
