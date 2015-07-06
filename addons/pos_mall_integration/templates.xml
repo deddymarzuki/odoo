@@ -1,0 +1,44 @@
+<openerp>
+    <data>
+        <!--
+        <record id="view_pos_mall_config_form" model="ir.ui.view">
+            <field name="name">pos.config.form.view.inherit</field>
+            <field name="model">pos.config</field>
+            <field name="inherit_id" ref="point_of_sale.view_pos_config_form"/>
+            <field name="arch" type="xml">
+                <field name="iface_cashdrawer" position="after">
+                    <field name="tenant_id"/>
+                    <field name="ftp_password"/>
+                    <field name="ftp_address"/>
+                    <field name="ftp_user_id"/>
+                </field>
+            </field>
+        </record>
+        -->
+        <record model="ir.ui.view" id="mall_integration_file_tree_view">
+            <field name="name">mall_integration_file.tree</field>
+            <field name="model">mall.mall_integration.dailyfile</field>
+            <field name="arch" type="xml">
+                <tree string="Uploaded File">
+                    <field name="file_name"/>
+                    <field name="uploaded_date"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- window action -->
+        <!--
+            The following tag is an action definition for a "window action",
+            that is an action opening a view or a set of views
+        -->
+        <record model="ir.actions.act_window" id="mall_integration_file_action">
+            <field name="name">Mall Integration</field>
+            <field name="res_model">mall.mall_integration.dailyfile</field>
+            <field name="view_type">tree</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+        <menuitem id="mall_integration_file_menu" parent="point_of_sale.menu_point_of_sale"
+                  name="Mall Integration" action="mall_integration_file_action" />
+    </data>
+</openerp>

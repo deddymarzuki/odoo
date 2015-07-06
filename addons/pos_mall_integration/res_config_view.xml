@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_mall_config" model="ir.ui.view">
+            <field name="name">mall settings</field>
+            <field name="model">sale.config.settings</field>
+            <field name="inherit_id" ref="base_setup.view_sale_config_settings"/>
+            <field name="arch" type="xml">
+                <div name="customer feature" position="after">
+                    <separator string="Mall Integration"/>
+                    <p>
+                        Set up FTP settings for Asiamall Integration.
+                    </p>
+                    <group>
+                        <label for="id" string="Mall Integration Features"/>
+                        <div>
+                            <div>
+                                <label for="mall_tenant_id" class="oe_inline"/>
+                                <field name="mall_tenant_id" class="oe_inline"/>
+
+                            </div>
+                            <div>
+                                <label for="ftp_address" class="oe_inline"/>
+                                <field name="ftp_address" class="oe_inline"/>
+
+                            </div>
+                            <div>
+                                <label for="ftp_user_id" class="oe_inline"/>
+                                <field name="ftp_user_id" class="oe_inline"/>
+
+                            </div>
+                            <div>
+                                <label for="ftp_password" class="oe_inline"/>
+                                <field name="ftp_password" class="oe_inline"/>
+
+                            </div>
+                            <div>
+                                <label for="temporary_folder" class="oe_inline"/>
+                                <field name="temporary_folder" class="oe_inline"/>
+
+                            </div>
+                        </div>
+                    </group>
+                </div>
+            </field>
+        </record>
+
+
+    </data>
+</openerp>
