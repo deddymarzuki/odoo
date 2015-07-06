@@ -913,7 +913,10 @@ class account_invoice(models.Model):
                     i[2]['period_id'] = period.id
 
             ctx['invoice'] = inv
-            move = account_move.with_context(ctx).create(move_vals)
+            ctx_nolang = ctx.copy()
+            ctx_nolang.pop('lang', None)
+            move = account_move.with_context(ctx_nolang).create(move_vals)
+
             # make the invoice point to that move
             vals = {
                 'move_id': move.id,
@@ -1312,9 +1315,9 @@ class account_invoice_line(models.Model):
             raise except_orm(_('No Partner Defined!'), _("You must first select a partner!"))
         if not product:
             if type in ('in_invoice', 'in_refund'):
-                return {'value': {}, 'domain': {'product_uom': []}}
+                return {'value': {}, 'domain': {'uos_id': []}}
             else:
-                return {'value': {'price_unit': 0.0}, 'domain': {'product_uom': []}}
+                return {'value': {'price_unit': 0.0}, 'domain': {'uos_id': []}}
 
         values = {}
 

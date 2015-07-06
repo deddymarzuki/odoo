@@ -226,8 +226,8 @@ class account_voucher(osv.osv):
         if not ids: return {}
         currency_obj = self.pool.get('res.currency')
         res = {}
-        debit = credit = 0.0
         for voucher in self.browse(cr, uid, ids, context=context):
+            debit = credit = 0.0
             sign = voucher.type == 'payment' and -1 or 1
             for l in voucher.line_dr_ids:
                 debit += l.amount
@@ -370,7 +370,7 @@ class account_voucher(osv.osv):
         'state': 'draft',
         'pay_now': 'pay_now',
         'name': '',
-        'date': lambda *a: time.strftime('%Y-%m-%d'),
+        'date': fields.date.context_today,
         'company_id': lambda self,cr,uid,c: self.pool.get('res.company')._company_default_get(cr, uid, 'account.voucher',context=c),
         'tax_id': _get_tax,
         'payment_option': 'without_writeoff',
