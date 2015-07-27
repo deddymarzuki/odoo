@@ -1,8 +1,6 @@
-openerp.web_debranding = function(instance) {
-
+function web_debranding_title(instance) {
  var QWeb = instance.web.qweb;
  var _t = instance.web._t;
-
  instance.web.WebClient.include({
     init: function(parent, client_options) {
         this._super(parent, client_options);
@@ -17,11 +15,12 @@ openerp.web_debranding = function(instance) {
              .filter([['key', '=', 'web_debranding.new_title']])
              .limit(1)
              .all().then(function (data) {
+                 if (!data.length)
+                     return;
                  title_part = data[0].value;
                  title_part = title_part.trim();
                  self.set('title_part', {"zopenerp": title_part});
                  });
     },
  }); 
-
 };
