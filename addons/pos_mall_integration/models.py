@@ -7,6 +7,8 @@ import os
 import csv
 import base64
 from datetime import date, timedelta, datetime
+import ftplib
+import sys
 
 _logger = logging.getLogger(__name__)
 
@@ -330,7 +332,43 @@ class MallIntegrationFile(models.Model):
         return True
 
     def ftp_upload_file(self, cr, uid, context=None):
-        _logger.debug('FTP Upload File')
+        _logger.debug('FTP Upload File 1')
+
+        config_pool = self.pool.get('ir.config_parameter')
+
+        #tenant_id = config_pool.get_param(cr, uid, "mall.asiamall.mall_tenant_id", default=None, context=context)
+        local_directory = config_pool.get_param(cr, uid, "mall.asiamall.temporary_folder", default=None, context=context)
+        ftp_id = config_pool.get_param(cr, uid, "mall.asiamall.ftp_user_id", default=None, context=context)
+        ftp_address = config_pool.get_param(cr, uid, "mall.asiamall.ftp_address", default=None, context=context)
+        ftp_password = config_pool.get_param(cr, uid, "mall.asiamall.ftp_password", default=None, context=context)
+
+
+        pending_ids = self.search(cr, uid, [('status', '=', 'Pending')], context=context)
+        updated_ids = []
+
+        if pending_ids:
+            #set up ftblib
+            try:
+                ftp = ftplib.FTP(ftp_address)
+                ftp.login(ftp_id, ftp_password)
+                pending_records = self.browse(cr, uid, pending_ids, context=context)
+
+                for record in pending_records:
+                    try:
+                        temp = os.path.join(local_directory, record.file_name)
+                        ftp.storlines("STOR " + record.file_name, open(temp))
+                        updated_ids.append(record.id)
+                    except:
+                        _logger.error('Unable to upload file %s &s'. temp, sys.exc_info()[0])
+
+                #update uploaded files
+                self.write(cr, uid, updated_ids, {'status': 'Uploaded'}, context=context)
+
+            except:
+                _logger.error('Unable to connect to ftp library: %s', sys.exc_info()[0])
+
+
+
 
 
     # => need POS id, then generate files
@@ -400,6 +438,50 @@ class MallUploadFileGenerationWizard(models.TransientModel):
         new_ids = None
         #self.create(cr, uid, {'file_name': temp_file_name, 'value_date': yesterday, 'status': 'Pending'} , context=context)
         self.env['mall.mall_integration.dailyfile'].create({'file_name': temp_file_name, 'value_date': yesterday, 'status': 'Pending'})
+
+        return {}
+
+class MallUploadWizard(models.TransientModel):
+
+    _name = "mall.mall_integration.upload.wizard"
+
+    @api.multi
+    def upload(self):
+        _logger.debug("upload file")
+
+        #look for files without correct uploadstatus and upload it
+        config_pool = self.env['ir.config_parameter']
+
+        local_directory = config_pool.get_param("mall.asiamall.temporary_folder")
+        ftp_id = config_pool.get_param("mall.asiamall.ftp_user_id")
+        ftp_address = config_pool.get_param("mall.asiamall.ftp_address")
+        ftp_password = config_pool.get_param("mall.asiamall.ftp_password")
+
+        daily_pool = self.env['mall.mall_integration.dailyfile']
+
+        pending_ids = daily_pool.search([('status', '=', 'Pending')])
+        updated_ids = []
+
+        if pending_ids:
+            #set up ftblib
+            try:
+                ftp = ftplib.FTP(ftp_address)
+                ftp.login(ftp_id, ftp_password)
+
+                for record in pending_ids:
+                    try:
+                        temp = os.path.join(local_directory, record.file_name)
+                        ftp.storlines("STOR " + record.file_name, open(temp))
+                        updated_ids.append(record.id)
+                    except:
+                        _logger.error('Unable to upload file %s &s'. temp, sys.exc_info()[0])
+
+                #update uploaded files
+                pending_ids.write( {'status': 'Uploaded', 'uploaded_date': datetime.now()})
+
+            except:
+                _logger.error('Unable to connect to ftp library: %s', sys.exc_info()[0])
+
 
         return {}
 

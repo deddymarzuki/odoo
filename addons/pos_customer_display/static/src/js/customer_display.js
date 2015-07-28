@@ -18,7 +18,7 @@ openerp.pos_customer_display = function(instance){
         prepare_text_customer_display: function(type, data){
 
 
-        alert('Type: ' + type);
+        //alert('Type: ' + type);
 
             if (this.config.iface_customer_display != true)
                 return;

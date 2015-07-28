@@ -24,7 +24,7 @@
     # Check https://github.com/odoo/odoo/blob/master/openerp/addons/base/module/module_data.xml
     # for the full list
     'category': 'Point of Sale',
-    'version': '3.4',
+    'version': '3.5',
 
     # any module necessary for this one to work correctly
     'depends': ['base', 'point_of_sale'],
