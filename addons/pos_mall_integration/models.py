@@ -31,7 +31,7 @@ class MallIntegrationFile(models.Model):
         product_brand_pool=self.pool.get('product.brand')
         pos_category_pool=self.pool.get('pos.category')
 
-        filename = "E:\\Temporary\\brand.csv"
+        filename = "/opt/odoo/migration/brand.csv"
 
         with open(filename, 'rb') as csvfile:
             spamreader = csv.DictReader(csvfile, delimiter=',')
@@ -44,7 +44,7 @@ class MallIntegrationFile(models.Model):
                     logo_filename = row['Picture']
 
                     if logo_filename:
-                        image_dir = "E:\\Temporary\\brand_images\\" + logo_filename.strip()
+                        image_dir = "/opt/odoo/migration/brand_images/" + logo_filename.strip()
                         _logger.debug('test image_dir: %s', image_dir)
 
                         with open(image_dir, 'rb') as imagefile:
@@ -67,7 +67,7 @@ class MallIntegrationFile(models.Model):
         attribute_values = []
         attribute_dict = {}
 
-        filename = "E:\\Temporary\\size.csv"
+        filename = "/opt/odoo/migration/size.csv"
 
         with open(filename, 'rb') as csvfile:
             spamreader = csv.DictReader(csvfile, delimiter=',')
@@ -97,7 +97,7 @@ class MallIntegrationFile(models.Model):
         attribute_values = []
         attribute_dict = {}
 
-        filename = "E:\\Temporary\\colour.csv"
+        filename = "/opt/odoo/migration/colour.csv"
 
         with open(filename, 'rb') as csvfile:
             spamreader = csv.DictReader(csvfile, delimiter=',')
@@ -148,7 +148,7 @@ class MallIntegrationFile(models.Model):
             #    _logger.debug("name: %s", id.name)
             color = record
 
-        filename = "E:\\Temporary\\product.csv"
+        filename = "/opt/odoo/migration/product.csv"
 
         with open(filename, 'rb') as csvfile:
             #spamreader = csv.reader(csvfile, delimiter=',', quotechar='|')
