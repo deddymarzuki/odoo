@@ -974,7 +974,8 @@ function openerp_pos_screens(instance, module){ //module is instance.point_of_sa
         },
         print: function() {
             this.pos.get('selectedOrder')._printed = true;
-            window.print();
+            //disable printing
+            //window.print();
         },
         finishOrder: function() {
             this.pos.get('selectedOrder').destroy();
