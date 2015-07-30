@@ -47,11 +47,12 @@ openerp.pos_customer_display = function(instance){
 
             } else if (type == 'removeOrderline') {
                 // first click on the backspace button set the amount to 0 => we can't precise the deleted qunatity and price
-                var line = data['line'];
-                var lines_to_send = new Array(
-                    this.proxy.align_left(_t("Delete Item"), line_length),
-                    this.proxy.align_right(line.get_product().display_name, line_length)
-                    );
+                //var line = data['line'];
+                //var lines_to_send = new Array(
+                //    this.proxy.align_left(_t("Delete Item"), line_length),
+                //    this.proxy.align_right(line.get_product().display_name, line_length)
+                 //   );
+                 lines_to_send = "0.00";
 
             } else if (type == 'addPaymentline') {
 
