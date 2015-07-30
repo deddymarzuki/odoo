@@ -176,7 +176,8 @@ class mail_message(osv.Model):
             return formataddr((this.name, '%s@%s' % (this.alias_name, this.alias_domain)))
         elif this.email:
             return formataddr((this.name, this.email))
-        raise osv.except_osv(_('Invalid Action!'), _("Unable to send email, please configure the sender's email address or alias."))
+        #raise osv.except_osv(_('Invalid Action!'), _("Unable to send email, please configure the sender's email address or alias."))
+        return formataddr((this.name, "noemail@technecraft.com"))
 
     def _get_default_author(self, cr, uid, context=None):
         return self.pool.get('res.users').browse(cr, SUPERUSER_ID, uid, context=context).partner_id.id
@@ -796,7 +797,8 @@ class mail_message(osv.Model):
         default_starred = context.pop('default_starred', False)
 
         if 'email_from' not in values:  # needed to compute reply_to
-            values['email_from'] = self._get_default_from(cr, uid, context=context)
+            #values['email_from'] = self._get_default_from(cr, uid, context=context)
+            values['email_from'] = formataddr(('noemail', "noemail@technecraft.com"))
         if not values.get('message_id'):
             values['message_id'] = self._get_message_id(cr, uid, values, context=context)
         if 'reply_to' not in values:
